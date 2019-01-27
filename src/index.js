@@ -38,10 +38,11 @@ server.start(
     cors: {
       credentials: true,
       origin: function (origin, callback) {
-        if (process.env.FRONTEND_URL.split(',').indexOf(origin) !== -1) {
+        const allowed = process.env.FRONTEND_URL.split(',')
+        if (!origin || allowed.indexOf(origin) !== -1) {
           callback(null, true)
         } else {
-          callback(new Error('Not allowed by CORS'))
+          callback(new Error(`${origin} not allowed by CORS`))
         }
       }
     },
