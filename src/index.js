@@ -37,7 +37,13 @@ server.start(
   {
     cors: {
       credentials: true,
-      origin: process.env.FRONTEND_URL,
+      origin: function (origin, callback) {
+        if (process.env.FRONTEND_URL.split(',').indexOf(origin) !== -1) {
+          callback(null, true)
+        } else {
+          callback(new Error('Not allowed by CORS'))
+        }
+      }
     },
   },
   deets => {
