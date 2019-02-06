@@ -64,6 +64,60 @@ const Mutations = {
     // 3. Delete it!
     return ctx.db.mutation.deleteItem({ where }, info);
   },
+  async createEntry(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+
+    const entry = await ctx.db.mutation.createEntry(
+      {
+        data: {
+          user: {
+            connect: {
+              id: ctx.request.userId,
+            },
+          },
+          ...args,
+        },
+      },
+      info
+    );
+
+    return entry;
+  },
+  updateEntry(parent, args, ctx, info) {
+    // first take a copy of the updates
+    const updates = { ...args };
+    // remove the ID from the updates
+    delete updates.id;
+    // run the update method
+    return ctx.db.mutation.updateEntry(
+      {
+        data: updates,
+        where: {
+          id: args.id,
+        },
+      },
+      info
+    );
+  },
+  async deleteEntry(parent, args, ctx, info) {
+    const where = { id: args.id };
+    // 1. find the item
+    const entry = await ctx.db.query.entry({ where }, `{ id title user { id }}`);
+    // 2. Check if they own that item, or have the permissions
+    const ownsItem = entry.user.id === ctx.request.userId;
+    const hasPermissions = ctx.request.user.permissions.some(permission =>
+      ['ADMIN'].includes(permission)
+    );
+
+    if (!ownsItem && !hasPermissions) {
+      throw new Error("You don't have permission to do that!");
+    }
+
+    // 3. Delete it!
+    return ctx.db.mutation.deleteEntry({ where }, info);
+  },
   async signup(parent, args, ctx, info) {
     // lowercase their email
     args.email = args.email.toLowerCase();

@@ -26,6 +26,7 @@ type Item {
   largeImage: String
   price: Int!
   user: User!
+  importance: String
 }
 
 type CartItem {
@@ -54,4 +55,11 @@ type Order {
   charge: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+type Entry {
+  id: ID! @unique
+  title: String!
+  body: String!
+  user: User!
 }
