@@ -14,4 +14,18 @@ function hasPermission(user, permissionsNeeded) {
   }
 }
 
+function debounced (delay, fn) {
+  let timerId;
+  return function (...args) {
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+    timerId = setTimeout(() => {
+      fn(...args);
+      timerId = null;
+    }, delay);
+  }
+}
+
+exports.debounced = debounced
 exports.hasPermission = hasPermission;
