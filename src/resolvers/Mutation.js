@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const { randomBytes } = require('crypto');
 const { promisify } = require('util');
 const { transport, makeANiceEmail } = require('../mail');
-const { hasPermission } = require('../utils');
 const stripe = require('../stripe');
 
 const Mutations = {
@@ -46,19 +45,13 @@ const Mutations = {
   },
   async deleteEntry(parent, args, ctx, info) {
     const where = { id: args.id };
-    // 1. find the item
     const entry = await ctx.db.query.entry({ where }, `{ id title user { id }}`);
-    // 2. Check if they own that item, or have the permissions
     const ownsItem = entry.user.id === ctx.request.userId;
-    const hasPermissions = ctx.request.user.permissions.some(permission =>
-      ['ADMIN'].includes(permission)
-    );
 
-    if (!ownsItem && !hasPermissions) {
+    if (!ownsItem) {
       throw new Error("You don't have permission to do that!");
     }
 
-    // 3. Delete it!
     return ctx.db.mutation.deleteEntry({ where }, info);
   },
   async signup(parent, args, ctx, info) {
@@ -72,7 +65,6 @@ const Mutations = {
         data: {
           ...args,
           password,
-          permissions: { set: ['USER'] },
         },
       },
       info

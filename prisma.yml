@@ -1,5 +1,5 @@
 #endpoint: ${env:PRISMA_ENDPOINT}
-#endpoint: https://alsob-1cd2f05dbc.herokuapp.com/backend/dev
+#endpoint: https://journal-fd4c9495b8.herokuapp.com/backend/prod
 endpoint: https://alsob-1cd2f05dbc.herokuapp.com/backend/dev
 datamodel: datamodel.graphql
 secret: ${env:PRISMA_SECRET}
