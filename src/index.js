@@ -1,11 +1,10 @@
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 
-require('dotenv').config({ path: 'variables.env' });
+require('dotenv').config()
+
 const createServer = require('./createServer');
 const db = require('./db');
-
-process.on('unhandledRejection', up => { console.log({up}) })
 
 const server = createServer();
 
