@@ -1,3 +1,7 @@
+const { 
+  AuthenticationError,
+  UserInputError
+} = require('apollo-server');
 const { forwardTo } = require('prisma-binding');
 
 const Query = {
@@ -18,7 +22,7 @@ const Query = {
     const { userId } = ctx.request;
     // 1. Make sure they are logged in
     if (!ctx.request.userId) {
-      throw new Error('You arent logged in!');
+      throw new AuthenticationError('You are not logged in.');
     }
     // 2. Query items
     const entries = await ctx.db.query.entries(
@@ -34,7 +38,7 @@ const Query = {
   },
   async users(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in!');
+      throw new AuthenticationError('You are not logged in.');
     }
 
     return ctx.db.query.users({}, info);

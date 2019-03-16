@@ -8,6 +8,7 @@
     "deploy": "prisma deploy -n"
   },
   "dependencies": {
+    "apollo-server": "^2.4.8",
     "babel-preset-env": "^1.7.0",
     "bcryptjs": "2.4.3",
     "dotenv": "6.0.0",

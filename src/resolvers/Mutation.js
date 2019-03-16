@@ -1,3 +1,7 @@
+const { 
+  AuthenticationError,
+  UserInputError
+} = require('apollo-server');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { randomBytes } = require('crypto');
@@ -8,7 +12,7 @@ const stripe = require('../stripe');
 const Mutations = {
   async createEntry(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new AuthenticationError('You are not logged in');
     }
 
     const entry = await ctx.db.mutation.createEntry(
@@ -49,7 +53,7 @@ const Mutations = {
     const ownsItem = entry.user.id === ctx.request.userId;
 
     if (!ownsItem) {
-      throw new Error("You don't have permission to do that!");
+      throw new AuthenticationError("You don't have permission to do that!");
     }
 
     return ctx.db.mutation.deleteEntry({ where }, info);
@@ -82,12 +86,11 @@ const Mutations = {
     // 1. check if there is a user with that email
     const user = await ctx.db.query.user({ where: { email } });
     if (!user) {
-      throw new Error(`No such user found for email ${email}`);
+      throw new AuthenticationError(`No account found for ${email}. Sign up! :)`);
     }
-    // 2. Check if their password is correct
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
-      throw new Error('Invalid Password!');
+      throw new AuthenticationError('That did not work.');
     }
     // 3. generate the JWT Token
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
@@ -106,7 +109,7 @@ const Mutations = {
     // 1. Check if this is a real user
     const user = await ctx.db.query.user({ where: { email: args.email } });
     if (!user) {
-      throw new Error(`No such user found for email ${args.email}`);
+      throw new AuthenticationError(`No account found for ${email}. Sign up! :)`);
     }
     // 2. Set a reset token and expiry on that user
     const randomBytesPromiseified = promisify(randomBytes);
@@ -132,7 +135,7 @@ const Mutations = {
   async resetPassword(parent, args, ctx, info) {
     // 1. check if the passwords match
     if (args.password !== args.confirmPassword) {
-      throw new Error("The passwords don't match");
+      throw new UserInputError("The passwords don't match");
     }
     // 2. check if its a legit reset token
     // 3. Check if its expired
@@ -143,7 +146,7 @@ const Mutations = {
       },
     });
     if (!user) {
-      throw new Error('This token is either invalid or expired');
+      throw new UserInputError('This token is either invalid or expired');
     }
     // 4. Hash their new password
     const password = await bcrypt.hash(args.password, 10);
