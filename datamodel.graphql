@@ -8,7 +8,7 @@ type User {
 }
 
 type Entry {
-  id: ID! @unique
+  tempId: String! @unique
   title: String!
   body: String!
   user: User!

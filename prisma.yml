@@ -1,4 +1,11 @@
-endpoint: ${env:PRISMA_ENDPOINT}
+#endpoint: ${env:PRISMA_ENDPOINT}
+#endpoint: https://unexpected-7882afdadf.herokuapp.com/backend/dev
+#endpoint: https://unexpected-7882afdadf.herokuapp.com/backend/dev
+#endpoint: https://journal-6e2fd84644.herokuapp.com/backend/dev
+#endpoint: https://journal-6e2fd84644.herokuapp.com/backend/dev
+#endpoint: https://journal-6e2fd84644.herokuapp.com/backend/dev
+#endpoint: https://journal-aleks-tech-2ffee88625.herokuapp.com/backend/dev
+endpoint: https://journal-aleks-tech-2ffee88625.herokuapp.com/backend/dev
 datamodel: datamodel.graphql
 secret: ${env:PRISMA_SECRET}
 hooks:

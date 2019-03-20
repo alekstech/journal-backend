@@ -10,9 +10,9 @@ type Mutation {
   signout: SuccessMessage
   requestReset(email: String!): SuccessMessage
   resetPassword(resetToken: String!, password: String!, confirmPassword: String!): User!
-  createEntry(title: String, body: String): Entry!
-  updateEntry(id: ID!, title: String, body: String): Entry!
-  deleteEntry(id: ID!): Entry
+  createEntry(tempId: String!, title: String, body: String): Entry!
+  updateEntry(tempId: String!, title: String, body: String): Entry!
+  deleteEntry(tempId: String!): Entry
 }
 
 type Query {

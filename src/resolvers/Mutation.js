@@ -126,7 +126,7 @@ const Mutations = {
       subject: 'Your Password Reset Token',
       html: makeANiceEmail(`Your Password Reset Token is here!
       \n\n
-      <a href="${ctx.request.headers.origin}/reset?resetToken=${resetToken}">Click Here to Reset</a>`),
+      <a href="${ctx.request.headers.origin}/reset-password/${resetToken}">Click Here to Reset</a>`),
     });
 
     // 4. Return the message

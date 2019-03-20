@@ -1,5 +1,5 @@
-# source: https://alsob-1cd2f05dbc.herokuapp.com/backend/dev
-# timestamp: Sun Mar 10 2019 00:35:04 GMT-0500 (GMT-05:00)
+# source: https://journal-aleks-tech-2ffee88625.herokuapp.com/backend/dev
+# timestamp: Wed Mar 20 2019 18:23:58 GMT-0500 (GMT-05:00)
 
 type AggregateEntry {
   count: Int!
@@ -14,8 +14,8 @@ type BatchPayload {
   count: Long!
 }
 
-type Entry implements Node {
-  id: ID!
+type Entry {
+  tempId: String!
   title: String!
   body: String!
   user: User!
@@ -32,6 +32,7 @@ type EntryConnection {
 }
 
 input EntryCreateInput {
+  tempId: String!
   title: String!
   body: String!
   user: UserCreateOneInput!
@@ -47,12 +48,14 @@ type EntryEdge {
 }
 
 enum EntryOrderByInput {
-  id_ASC
-  id_DESC
+  tempId_ASC
+  tempId_DESC
   title_ASC
   title_DESC
   body_ASC
   body_DESC
+  id_ASC
+  id_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -60,7 +63,7 @@ enum EntryOrderByInput {
 }
 
 type EntryPreviousValues {
-  id: ID!
+  tempId: String!
   title: String!
   body: String!
 }
@@ -105,12 +108,14 @@ input EntrySubscriptionWhereInput {
 }
 
 input EntryUpdateInput {
+  tempId: String
   title: String
   body: String
   user: UserUpdateOneRequiredInput
 }
 
 input EntryUpdateManyMutationInput {
+  tempId: String
   title: String
   body: String
 }
@@ -124,46 +129,46 @@ input EntryWhereInput {
 
   """Logical NOT on all given filters combined by AND."""
   NOT: [EntryWhereInput!]
-  id: ID
+  tempId: String
 
   """All values that are not equal to given value."""
-  id_not: ID
+  tempId_not: String
 
   """All values that are contained in given list."""
-  id_in: [ID!]
+  tempId_in: [String!]
 
   """All values that are not contained in given list."""
-  id_not_in: [ID!]
+  tempId_not_in: [String!]
 
   """All values less than the given value."""
-  id_lt: ID
+  tempId_lt: String
 
   """All values less than or equal the given value."""
-  id_lte: ID
+  tempId_lte: String
 
   """All values greater than the given value."""
-  id_gt: ID
+  tempId_gt: String
 
   """All values greater than or equal the given value."""
-  id_gte: ID
+  tempId_gte: String
 
   """All values containing the given string."""
-  id_contains: ID
+  tempId_contains: String
 
   """All values not containing the given string."""
-  id_not_contains: ID
+  tempId_not_contains: String
 
   """All values starting with the given string."""
-  id_starts_with: ID
+  tempId_starts_with: String
 
   """All values not starting with the given string."""
-  id_not_starts_with: ID
+  tempId_not_starts_with: String
 
   """All values ending with the given string."""
-  id_ends_with: ID
+  tempId_ends_with: String
 
   """All values not ending with the given string."""
-  id_not_ends_with: ID
+  tempId_not_ends_with: String
   title: String
 
   """All values that are not equal to given value."""
@@ -248,7 +253,7 @@ input EntryWhereInput {
 }
 
 input EntryWhereUniqueInput {
-  id: ID
+  tempId: String
 }
 
 """
