@@ -1,5 +1,5 @@
 # source: https://journal-aleks-tech-2ffee88625.herokuapp.com/backend/dev
-# timestamp: Wed Mar 20 2019 18:23:58 GMT-0500 (GMT-05:00)
+# timestamp: Wed Mar 20 2019 18:41:03 GMT-0500 (GMT-05:00)
 
 type AggregateEntry {
   count: Int!
@@ -14,7 +14,8 @@ type BatchPayload {
   count: Long!
 }
 
-type Entry {
+type Entry implements Node {
+  id: ID!
   tempId: String!
   title: String!
   body: String!
@@ -48,14 +49,14 @@ type EntryEdge {
 }
 
 enum EntryOrderByInput {
+  id_ASC
+  id_DESC
   tempId_ASC
   tempId_DESC
   title_ASC
   title_DESC
   body_ASC
   body_DESC
-  id_ASC
-  id_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -63,6 +64,7 @@ enum EntryOrderByInput {
 }
 
 type EntryPreviousValues {
+  id: ID!
   tempId: String!
   title: String!
   body: String!
@@ -129,6 +131,46 @@ input EntryWhereInput {
 
   """Logical NOT on all given filters combined by AND."""
   NOT: [EntryWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
   tempId: String
 
   """All values that are not equal to given value."""
@@ -253,7 +295,7 @@ input EntryWhereInput {
 }
 
 input EntryWhereUniqueInput {
-  tempId: String
+  id: ID
 }
 
 """

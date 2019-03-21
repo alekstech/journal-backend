@@ -11,8 +11,8 @@ type Mutation {
   requestReset(email: String!): SuccessMessage
   resetPassword(resetToken: String!, password: String!, confirmPassword: String!): User!
   createEntry(tempId: String!, title: String, body: String): Entry!
-  updateEntry(tempId: String!, title: String, body: String): Entry!
-  deleteEntry(tempId: String!): Entry
+  updateEntry(id: ID!, tempId: String!, title: String, body: String): Entry!
+  deleteEntry(id: ID!, tempId: String!): Entry
 }
 
 type Query {
