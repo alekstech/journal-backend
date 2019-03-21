@@ -7,13 +7,15 @@ const jwt = require('jsonwebtoken');
 const { randomBytes } = require('crypto');
 const { promisify } = require('util');
 const { transport, makeANiceEmail } = require('../mail');
-const stripe = require('../stripe');
 
 const Mutations = {
   async createEntry(parent, args, ctx, info) {
     if (!ctx.request.userId) {
       throw new AuthenticationError('You are not logged in');
     }
+
+    const hashed = await bcrypt.hash
+    console.log({hashed})
 
     const entry = await ctx.db.mutation.createEntry(
       {
@@ -31,12 +33,17 @@ const Mutations = {
 
     return entry;
   },
-  updateEntry(parent, args, ctx, info) {
+  async updateEntry(parent, args, ctx, info) {
     // first take a copy of the updates
+    console.log('This should be white-listed')
     const updates = { ...args };
     // remove the ID from the updates
     delete updates.id;
     // run the update method
+
+    const hashed = await bcrypt.hash
+    console.log({hashed})
+
     return ctx.db.mutation.updateEntry(
       {
         data: updates,
@@ -85,6 +92,7 @@ const Mutations = {
   async signin(parent, { email, password }, ctx, info) {
     // 1. check if there is a user with that email
     const user = await ctx.db.query.user({ where: { email } });
+    console.log('peekaboo')
     if (!user) {
       throw new AuthenticationError(`No account found for ${email}. Sign up! :)`);
     }
