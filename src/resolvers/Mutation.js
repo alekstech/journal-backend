@@ -92,7 +92,6 @@ const Mutations = {
   async signin(parent, { email, password }, ctx, info) {
     // 1. check if there is a user with that email
     const user = await ctx.db.query.user({ where: { email } });
-    console.log('peekaboo')
     if (!user) {
       throw new AuthenticationError(`No account found for ${email}. Sign up! :)`);
     }

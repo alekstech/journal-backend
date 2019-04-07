@@ -5,7 +5,6 @@ const {
 const { forwardTo } = require('prisma-binding');
 
 const Query = {
-  entriesConnection: forwardTo('db'),
   me(parent, args, ctx, info) {
     // check if there is a current user ID
     if (!ctx.request.userId) {
@@ -17,6 +16,24 @@ const Query = {
       },
       info
     );
+  },
+  async entriesConnection(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+
+    if (!ctx.request.userId) {
+      throw new AuthenticationError('You are not logged in.');
+    }
+
+    const entries = await ctx.db.query.entriesConnection(
+      {
+        where: {
+          user: { id: userId },
+        },
+      },
+      info
+    );
+
+    return entries;
   },
   async entries(parent, args, ctx, info) {
     const { userId } = ctx.request;
