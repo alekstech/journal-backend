@@ -15,7 +15,6 @@ const Mutations = {
     }
 
     const hashed = await bcrypt.hash
-    console.log({hashed})
 
     const entry = await ctx.db.mutation.createEntry(
       {
@@ -42,7 +41,6 @@ const Mutations = {
     // run the update method
 
     const hashed = await bcrypt.hash
-    console.log({hashed})
 
     return ctx.db.mutation.updateEntry(
       {
